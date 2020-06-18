@@ -1,0 +1,53 @@
+# ------------------------------------------------------------------------------
+# Kafka:
+# ------------------------------------------------------------------------------
+
+replicas: 1
+zookeeper:
+  enabled: true
+  replicaCount: 1
+
+external:
+  enabled: true
+  # type can be either NodePort or LoadBalancer
+  type: NodePort
+  dns:
+    useInternal: false
+    useExternal: true
+  distinct: false
+  servicePort: 19092
+  firstListenerPort: 31090
+  domain: cluster.local
+  loadBalancerIP: []
+  loadBalancerSourceRanges: []
+
+configurationOverrides:
+  "auto.create.topics.enable": true
+  #auto.create.topics.enable: true
+  ## Options required for external access via NodePort
+  ## ref:
+  ## - http://kafka.apache.org/documentation/#security_configbroker
+  ## - https://cwiki.apache.org/confluence/display/KAFKA/KIP-103%3A+Separation+of+Internal+and+External+traffic
+  ##
+  ## Setting "advertised.listeners" here appends to "PLAINTEXT://${POD_IP}:9092,", ensure you update the domain
+  ## If external service type is Nodeport:
+  "advertised.listeners": |-
+    EXTERNAL://192.168.64.2:$((31090 + ${KAFKA_BROKER_ID}))
+  "listener.security.protocol.map": |-
+    PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+
+topics:
+  - name: myExistingTopicConfig
+  #   config: "cleanup.policy=compact,delete.retention.ms=604800000"
+    partitions: 1
+  #   replicationFactor: 5
+  #   reassignPartitions: true
+  #   acls:
+  #     - user: read
+  #       operations: [ Read ]
+  #     - user: read_and_write
+  #       operations:
+  #         - Read
+  #         - Write
+  #     - user: all
+#       operations: [ All ]

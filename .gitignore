@@ -1,0 +1,6 @@
+/target
+/.idea/
+/alpacarust.iml
+/app.json
+gitignore_folder/api.txt
+/gitignore_folder/

@@ -1,0 +1,28 @@
+[package]
+name = "alpacarust"
+version = "0.1.0"
+authors = ["Murali C <ch.murali@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+#futures = "0.3.4"
+reqwest = { version = "*", features = ["json","blocking"] }
+tokio = { version = "0.2", features = ["full"] }
+
+#serde = "1.0.90"
+#serde_derive = "1.0"
+serde_json = "1.0"
+serde = { version = "1.0.90", features = ["derive"] }
+
+kafka = "0.8"
+
+log = "0.4"
+env_logger = "0.6"
+pretty_env_logger = "*"
+
+config = "*"
+crossbeam = "0.7.3"
+
+chrono = "0.4.11"
